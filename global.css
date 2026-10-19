@@ -1,0 +1,97 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Roam design tokens: the single source of truth for every style value.
+   tailwind.config.js only maps class names to these variables.
+   Light only (app.json userInterfaceStyle). Add a dark set here later.
+   Exceptions kept in TS because RN needs JS values: src/theme/shadows.ts, src/theme/motion.ts. */
+:root {
+  /* Colors */
+  --color-primary: #FFC629;
+  --color-primary-soft: #FFF5D6;
+  --color-lavender: #C9B4FF;
+  --color-lavender-soft: #F3EEFF;
+  --color-lavender-muted: #E6DCFF;
+  --color-lavender-strong: #7C5CFF;
+  --color-ink: #0B0B1A;
+  --color-ink-secondary: #6B7280;
+  --color-surface: #FFFFFF;
+  --color-surface-muted: #F4F5F7;
+  --color-border: #E5E7EB;
+  --color-glass: rgba(255, 255, 255, 0.7);
+  --color-success: #1E8E3E;
+  --color-success-soft: #E7F5EC;
+  --color-danger: #E5383B;
+  --color-danger-soft: #FDECEE;
+  --color-info: #3B5BDB;
+  --color-info-soft: #E8EEFF;
+
+  /* Font families: one per weight (custom fonts ignore fontWeight on native) */
+  --font-sans: "PlusJakartaSans_400Regular";
+  --font-sans-medium: "PlusJakartaSans_500Medium";
+  --font-sans-semibold: "PlusJakartaSans_600SemiBold";
+  --font-sans-bold: "PlusJakartaSans_700Bold";
+  --font-sans-extrabold: "PlusJakartaSans_800ExtraBold";
+
+  /* Type scale: font size / line height */
+  --text-display: 56px;
+  --leading-display: 56px;
+  --text-heading: 28px;
+  --leading-heading: 34px;
+  --text-title: 20px;
+  --leading-title: 24px;
+  --text-subtitle: 16px;
+  --leading-subtitle: 22px;
+  --text-body: 16px;
+  --leading-body: 24px;
+  --text-button: 17px;
+  --leading-button: 22px;
+  --text-caption: 14px;
+  --leading-caption: 20px;
+  --text-small: 13px;
+  --leading-small: 18px;
+
+  /* Spacing and sizes (4px grid) */
+  --space-0: 0px;
+  --space-px: 1px;
+  --space-0-5: 2px;
+  --space-1: 4px;
+  --space-1-5: 6px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-9: 36px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-14: 56px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-28: 112px;
+  --space-36: 144px;
+  --space-40: 160px;
+  --space-gutter: 20px;
+  --size-tab-bar: 80px;
+  --size-tab-active: 72px;
+
+  /* Radii */
+  --radius-none: 0px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-2xl: 24px;
+  --radius-full: 9999px;
+
+  /* Opacity */
+  --opacity-disabled: 0.4;
+  --opacity-pressed-icon: 0.6;
+  --opacity-pressed: 0.85;
+
+  /* Border widths */
+  --border-default: 1px;
+  --border-2: 2px;
+}

@@ -1,0 +1,91 @@
+/** @type {import('tailwindcss').Config} */
+// Every value lives in global.css as a CSS variable. This file only maps
+// class names to those variables, and replaces Tailwind's scales so only
+// Roam tokens exist.
+const v = (name) => `var(--${name})`;
+const type = (name) => [v(`text-${name}`), { lineHeight: v(`leading-${name}`) }];
+
+module.exports = {
+  content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  presets: [require("nativewind/preset")],
+  theme: {
+    colors: {
+      transparent: "transparent",
+      primary: { DEFAULT: v("color-primary"), soft: v("color-primary-soft") },
+      lavender: {
+        DEFAULT: v("color-lavender"),
+        soft: v("color-lavender-soft"),
+        muted: v("color-lavender-muted"),
+        strong: v("color-lavender-strong"),
+      },
+      ink: { DEFAULT: v("color-ink"), secondary: v("color-ink-secondary") },
+      surface: { DEFAULT: v("color-surface"), muted: v("color-surface-muted") },
+      border: v("color-border"),
+      glass: v("color-glass"),
+      success: { DEFAULT: v("color-success"), soft: v("color-success-soft") },
+      danger: { DEFAULT: v("color-danger"), soft: v("color-danger-soft") },
+      info: { DEFAULT: v("color-info"), soft: v("color-info-soft") },
+    },
+    fontFamily: {
+      sans: v("font-sans"),
+      "sans-medium": v("font-sans-medium"),
+      "sans-semibold": v("font-sans-semibold"),
+      "sans-bold": v("font-sans-bold"),
+      "sans-extrabold": v("font-sans-extrabold"),
+    },
+    fontSize: {
+      display: type("display"),
+      heading: type("heading"),
+      title: type("title"),
+      subtitle: type("subtitle"),
+      body: type("body"),
+      button: type("button"),
+      caption: type("caption"),
+      small: type("small"),
+    },
+    spacing: {
+      0: v("space-0"),
+      px: v("space-px"),
+      0.5: v("space-0-5"),
+      1: v("space-1"),
+      1.5: v("space-1-5"),
+      2: v("space-2"),
+      3: v("space-3"),
+      4: v("space-4"),
+      5: v("space-5"),
+      6: v("space-6"),
+      8: v("space-8"),
+      9: v("space-9"),
+      10: v("space-10"),
+      12: v("space-12"),
+      14: v("space-14"),
+      16: v("space-16"),
+      20: v("space-20"),
+      28: v("space-28"),
+      36: v("space-36"),
+      40: v("space-40"),
+      gutter: v("space-gutter"),
+      "tab-bar": v("size-tab-bar"),
+      "tab-active": v("size-tab-active"),
+    },
+    borderRadius: {
+      none: v("radius-none"),
+      sm: v("radius-sm"),
+      md: v("radius-md"),
+      lg: v("radius-lg"),
+      xl: v("radius-xl"),
+      "2xl": v("radius-2xl"),
+      full: v("radius-full"),
+    },
+    opacity: {
+      40: v("opacity-disabled"),
+      60: v("opacity-pressed-icon"),
+      85: v("opacity-pressed"),
+    },
+    borderWidth: {
+      DEFAULT: v("border-default"),
+      2: v("border-2"),
+    },
+  },
+  plugins: [],
+};
