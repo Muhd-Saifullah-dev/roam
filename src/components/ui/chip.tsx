@@ -9,6 +9,12 @@ const selectedTones = {
   primary: "bg-primary border-primary",
 } as const;
 
+// outline: white with a border (forms). filled: muted fill, no border (category filters).
+const variants = {
+  outline: "border-border bg-surface",
+  filled: "border-surface-muted bg-surface-muted",
+} as const;
+
 const sizes = {
   md: { box: "h-12 px-5", icon: 20 },
   sm: { box: "h-10 px-3", icon: 18 },
@@ -21,6 +27,7 @@ export type ChipProps = Omit<PressableProps, "children" | "style"> & {
   /** Fill color when selected. */
   tone?: keyof typeof selectedTones;
   size?: keyof typeof sizes;
+  variant?: keyof typeof variants;
   className?: string;
 };
 
@@ -30,6 +37,7 @@ export function Chip({
   selected = false,
   tone = "lavender",
   size = "md",
+  variant = "outline",
   disabled,
   className,
   ...props
@@ -42,7 +50,7 @@ export function Chip({
       accessibilityState={{ selected, disabled: !!disabled }}
       disabled={disabled}
       className={`flex-row items-center gap-2 rounded-full border active:opacity-85 ${s.box} ${
-        selected ? selectedTones[tone] : "border-border bg-surface"
+        selected ? selectedTones[tone] : variants[variant]
       } ${disabled ? "opacity-40" : ""} ${className ?? ""}`}
       {...props}
     >

@@ -12,6 +12,8 @@ const variants = {
 
 const sizes = {
   md: "h-14 px-6",
+  // Secondary actions stacked under a primary one, e.g. social sign-in.
+  compact: "h-12 px-6",
   sm: "h-9 px-4",
 } as const;
 
@@ -56,8 +58,8 @@ export function Button({
           {leading}
           <Text variant="button">{title}</Text>
           {trailingIcon && (
-            <View className={`absolute ${size === "md" ? "right-6" : "right-4"}`}>
-              <Icon as={trailingIcon} size={size === "md" ? 24 : 18} className="text-ink" />
+            <View className={`absolute ${size === "sm" ? "right-4" : "right-6"}`}>
+              <Icon as={trailingIcon} size={size === "sm" ? 18 : 24} className="text-ink" />
             </View>
           )}
         </>

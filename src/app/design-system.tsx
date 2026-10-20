@@ -6,12 +6,14 @@ import {
   Briefcase,
   Building2,
   Calendar,
+  ChevronLeft,
   CreditCard,
   FileText,
   Heart,
   House,
   List,
   Lock,
+  Mail,
   Map as MapIcon,
   MapPin,
   MessageSquareText,
@@ -31,16 +33,25 @@ import { Pressable, ScrollView, View } from "react-native";
 
 import {
   AlertBanner,
+  Avatar,
   Badge,
   Button,
   Chip,
+  CodeInput,
+  Divider,
+  GlassPill,
+  GoogleLogo,
   Icon,
   IconButton,
   ListGroup,
   ListingCard,
   ListRow,
+  PageIndicator,
   PolicyCard,
+  PressableScale,
+  SearchBar,
   SegmentedControl,
+  StayCard,
   Stepper,
   TabBar,
   Text,
@@ -62,10 +73,13 @@ const swatches = [
   { name: "Surface Gray", token: "surface-muted", className: "bg-surface-muted", use: "App background, input fields" },
   { name: "Border Gray", token: "border", className: "bg-border", use: "Dividers, borders" },
   { name: "Glass Blur", token: "glass", className: "bg-glass border border-border", use: "Tab bar, glass surfaces" },
+  { name: "Scrim", token: "scrim", className: "bg-scrim border border-rim", use: "Dark glass on photos" },
 ] as const;
 
 const typeSamples: { label: string; variant: TextVariant; sample: string }[] = [
   { label: "Display", variant: "display", sample: "Find your next stay" },
+  { label: "Headline", variant: "headline", sample: "Find your next stay" },
+  { label: "Hero", variant: "hero", sample: "Find a stay that fits your story" },
   { label: "Heading", variant: "heading", sample: "Modern Cabin with Hot Tub" },
   {
     label: "Body",
@@ -104,10 +118,10 @@ const listing: Listing = {
 const icons = [House, Search, Heart, Calendar, User, Settings, MapPin, SlidersHorizontal];
 
 const tabs = [
-  { key: "home", label: "Home", icon: House },
+  { key: "home", label: "Home", icon: House, filled: true },
   { key: "search", label: "Search", icon: Search },
   { key: "trips", label: "Trips", icon: Calendar },
-  { key: "profile", label: "Profile", icon: User },
+  { key: "profile", label: "Profile", icon: User, filled: true },
 ] as const;
 
 type TabKey = (typeof tabs)[number]["key"];
@@ -130,18 +144,9 @@ function SampleLabel({ children }: { children: string }) {
 }
 
 // PLACEHOLDER: replace with the official Google "G" logo asset.
-function GoogleLogoPlaceholder() {
-  return (
-    <View className="h-6 w-6 items-center justify-center rounded-full border border-border">
-      <Text variant="small" weight="bold">
-        G
-      </Text>
-    </View>
-  );
-}
-
 export default function DesignSystemScreen() {
   const [saved, setSaved] = useState(false);
+  const [code, setCode] = useState("");
   const [listingSaved, setListingSaved] = useState(false);
   const [search, setSearch] = useState("Cabins in California");
   const [name, setName] = useState("");
@@ -155,6 +160,7 @@ export default function DesignSystemScreen() {
   const [showSuccess, setShowSuccess] = useState(true);
   const [showError, setShowError] = useState(true);
   const [tab, setTab] = useState<TabKey>("home");
+  const [sentence, setSentence] = useState("");
 
   const toggleFilter = (f: string) =>
     setActiveFilters((cur) => (cur.includes(f) ? cur.filter((x) => x !== f) : [...cur, f]));
@@ -209,7 +215,9 @@ export default function DesignSystemScreen() {
           <SampleLabel>Primary</SampleLabel>
           <Button title="Book this stay" trailingIcon={ArrowRight} />
           <SampleLabel>Secondary</SampleLabel>
-          <Button title="Continue with Google" variant="secondary" leading={<GoogleLogoPlaceholder />} />
+          <Button title="Continue with Google" variant="secondary" leading={<GoogleLogo />} />
+          <SampleLabel>Compact (stacked secondary actions)</SampleLabel>
+          <Button title="Continue with Google" variant="secondary" size="compact" leading={<GoogleLogo />} />
           <SampleLabel>Small, loading, disabled</SampleLabel>
           <View className="flex-row flex-wrap items-center gap-3">
             <Button title="Book this stay" size="sm" />
@@ -227,6 +235,7 @@ export default function DesignSystemScreen() {
             <IconButton icon={Share} accessibilityLabel="Share" />
             <IconButton icon={Search} accessibilityLabel="Search" />
             <IconButton icon={Bookmark} accessibilityLabel="Bookmark" />
+            <IconButton icon={ChevronLeft} size="nav" accessibilityLabel="Back" />
           </View>
         </Section>
 
@@ -274,6 +283,14 @@ export default function DesignSystemScreen() {
             placeholder="Password"
             accessibilityLabel="Password"
           />
+          <SampleLabel>Labeled form field</SampleLabel>
+          <TextField icon={Mail} label="Email address" placeholder="you@example.com" />
+          <SampleLabel>Labeled field with error</SampleLabel>
+          <TextField icon={Mail} label="Email address" value="adrian@" error="Enter a valid email address" />
+          <SampleLabel>Divider</SampleLabel>
+          <Divider label="or" />
+          <SampleLabel>Code input</SampleLabel>
+          <CodeInput value={code} onChangeText={setCode} />
         </Section>
 
         <Section title="06. Filter chips">
@@ -294,6 +311,20 @@ export default function DesignSystemScreen() {
                 label={c.label}
                 icon={c.icon}
                 size="sm"
+                tone="primary"
+                selected={category === c.label}
+                onPress={() => setCategory(c.label)}
+              />
+            ))}
+          </View>
+          <SampleLabel>Filled (home categories)</SampleLabel>
+          <View className="flex-row flex-wrap gap-2">
+            {categories.map((c) => (
+              <Chip
+                key={c.label}
+                label={c.label}
+                icon={c.icon}
+                variant="filled"
                 tone="primary"
                 selected={category === c.label}
                 onPress={() => setCategory(c.label)}
@@ -377,6 +408,7 @@ export default function DesignSystemScreen() {
         </Section>
 
         <Section title="14. Status / Alerts">
+          <AlertBanner tone="info" message="Demo code: 123456" />
           {showSuccess && (
             <AlertBanner
               tone="success"
@@ -411,6 +443,39 @@ export default function DesignSystemScreen() {
             <Badge tone="danger" label="20% off" />
             <Badge tone="info" label="Superhost" />
           </View>
+        </Section>
+
+        <Section title="16. Glass pills / Page indicator">
+          <View className="flex-row items-center gap-3 rounded-lg bg-ink p-4">
+            <GlassPill label="Skip" onPress={() => {}} />
+            <GlassPill tone="dark" icon={MapPin} label="Whistler, BC" />
+          </View>
+          <PageIndicator count={3} index={0} />
+        </Section>
+
+        <Section title="17. Home search / Stay card / Avatar">
+          <SearchBar
+            value={sentence}
+            onChangeText={setSentence}
+            placeholder="quiet pet friendly cabin with hot tub"
+            onSubmit={() => {}}
+          />
+          <View className="flex-row items-center gap-4">
+            <Avatar name="Joanna Reyes" />
+            <Avatar name="Joanna Reyes" size="md" uri={listing.imageUrl} />
+            <PressableScale
+              accessibilityLabel="Search"
+              className="h-search-tall w-16 items-center justify-center rounded-2xl bg-surface-muted"
+            >
+              <Icon as={Search} size={28} className="text-ink" />
+            </PressableScale>
+          </View>
+          <StayCard
+            title={listing.title}
+            location={listing.location}
+            rating={listing.rating}
+            imageUrl={listing.imageUrl}
+          />
         </Section>
       </ScrollView>
     </>

@@ -1,25 +1,18 @@
 import { Eye, EyeOff, type LucideIcon } from "lucide-react-native";
-import { cssInterop } from "nativewind";
-import { useState, type ReactNode } from "react";
-import { Pressable, TextInput, View, type TextInputProps } from "react-native";
+import { useState, type ReactNode, type Ref } from "react";
+import { Pressable, View, type TextInput, type TextInputProps } from "react-native";
 
 import { Icon } from "./icon";
-
-// Adds token classes for the placeholder and selection colors.
-const StyledTextInput = cssInterop(TextInput, {
-  className: { target: "style", nativeStyleToProp: { textAlign: true } },
-  placeholderClassName: {
-    target: false,
-    nativeStyleToProp: { color: "placeholderTextColor" },
-  },
-  selectionClassName: {
-    target: false,
-    nativeStyleToProp: { color: "selectionColor" },
-  },
-});
+import { StyledTextInput } from "./styled-text-input";
+import { Text } from "./text";
 
 export type TextFieldProps = Omit<TextInputProps, "style" | "secureTextEntry"> & {
+  ref?: Ref<TextInput>;
   icon?: LucideIcon;
+  /** Label above the input, inside the box (form fields). */
+  label?: string;
+  /** Error message below the box; also turns the border red. */
+  error?: string;
   /** Element after the input, e.g. a filters button. Ignored when `secure`. */
   trailing?: ReactNode;
   /** Password field with a show/hide toggle. */
@@ -28,7 +21,10 @@ export type TextFieldProps = Omit<TextInputProps, "style" | "secureTextEntry"> &
 };
 
 export function TextField({
+  ref,
   icon,
+  label,
+  error,
   trailing,
   secure = false,
   editable = true,
@@ -40,43 +36,69 @@ export function TextField({
   const [focused, setFocused] = useState(false);
   const [hidden, setHidden] = useState(true);
 
+  const border = error
+    ? "border-2 border-danger bg-surface-muted"
+    : focused
+      ? "border-2 border-lavender-strong bg-lavender-soft"
+      : "border-2 border-surface-muted bg-surface-muted";
+
+  const input = (
+    <StyledTextInput
+      ref={ref}
+      // p-0: Android adds default vertical padding, which pushes text out of the short labeled input.
+      className={`${label ? "h-6" : "h-full flex-1"} p-0 font-sans text-body text-ink`}
+      textAlignVertical="center"
+      placeholderClassName="text-ink-secondary"
+      selectionClassName="text-lavender-strong"
+      accessibilityLabel={label}
+      editable={editable}
+      secureTextEntry={secure && hidden}
+      onFocus={(e) => {
+        setFocused(true);
+        onFocus?.(e);
+      }}
+      onBlur={(e) => {
+        setFocused(false);
+        onBlur?.(e);
+      }}
+      {...props}
+    />
+  );
+
   return (
-    <View
-      className={`h-14 flex-row items-center gap-3 rounded-lg px-4 ${
-        focused
-          ? "border-2 border-lavender-strong bg-lavender-soft"
-          : "border-2 border-surface-muted bg-surface-muted"
-      } ${editable ? "" : "opacity-40"} ${className ?? ""}`}
-    >
-      {icon && <Icon as={icon} className="text-ink" />}
-      <StyledTextInput
-        className="h-full flex-1 font-sans text-body text-ink"
-        placeholderClassName="text-ink-secondary"
-        selectionClassName="text-lavender-strong"
-        editable={editable}
-        secureTextEntry={secure && hidden}
-        onFocus={(e) => {
-          setFocused(true);
-          onFocus?.(e);
-        }}
-        onBlur={(e) => {
-          setFocused(false);
-          onBlur?.(e);
-        }}
-        {...props}
-      />
-      {secure ? (
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel={hidden ? "Show password" : "Hide password"}
-          hitSlop={8}
-          onPress={() => setHidden((h) => !h)}
-          className="active:opacity-60"
-        >
-          <Icon as={hidden ? EyeOff : Eye} className="text-ink" />
-        </Pressable>
-      ) : (
-        trailing
+    <View className={className}>
+      <View
+        className={`flex-row items-center rounded-lg ${
+          label ? "gap-5 px-5 py-2" : "h-14 gap-3 px-4"
+        } ${border} ${editable ? "" : "opacity-40"}`}
+      >
+        {icon && <Icon as={icon} className="text-ink" />}
+        {label ? (
+          <View className="flex-1">
+            <Text variant="caption">{label}</Text>
+            {input}
+          </View>
+        ) : (
+          input
+        )}
+        {secure ? (
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={hidden ? "Show password" : "Hide password"}
+            hitSlop={8}
+            onPress={() => setHidden((h) => !h)}
+            className="active:opacity-60"
+          >
+            <Icon as={hidden ? EyeOff : Eye} className="text-ink" />
+          </Pressable>
+        ) : (
+          trailing
+        )}
+      </View>
+      {error && (
+        <Text variant="small" tone="danger" className="mt-1.5 px-1">
+          {error}
+        </Text>
       )}
     </View>
   );

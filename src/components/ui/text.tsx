@@ -10,6 +10,8 @@ const weights = {
 
 const variants = {
   display: { size: "text-display", weight: "bold" },
+  headline: { size: "text-headline", weight: "extrabold" },
+  hero: { size: "text-hero", weight: "extrabold" },
   heading: { size: "text-heading", weight: "bold" },
   title: { size: "text-title", weight: "bold" },
   subtitle: { size: "text-subtitle", weight: "semibold" },

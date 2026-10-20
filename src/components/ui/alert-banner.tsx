@@ -1,4 +1,4 @@
-import { CircleAlert, CircleCheck, X } from "lucide-react-native";
+import { CircleAlert, CircleCheck, Info, X } from "lucide-react-native";
 import { Pressable, View } from "react-native";
 
 import { Icon } from "./icon";
@@ -7,6 +7,7 @@ import { Text } from "./text";
 const tones = {
   success: { box: "bg-success-soft", icon: CircleCheck, fg: "text-success", text: "success" },
   danger: { box: "bg-danger-soft", icon: CircleAlert, fg: "text-danger", text: "danger" },
+  info: { box: "bg-info-soft", icon: Info, fg: "text-info", text: "info" },
 } as const;
 
 export type AlertBannerProps = {

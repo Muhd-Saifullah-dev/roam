@@ -20,6 +20,8 @@
   --color-surface-muted: #F4F5F7;
   --color-border: #E5E7EB;
   --color-glass: rgba(255, 255, 255, 0.7);
+  --color-scrim: rgba(11, 11, 26, 0.45);
+  --color-rim: rgba(255, 255, 255, 0.5);
   --color-success: #1E8E3E;
   --color-success-soft: #E7F5EC;
   --color-danger: #E5383B;
@@ -35,6 +37,10 @@
   --font-sans-extrabold: "PlusJakartaSans_800ExtraBold";
 
   /* Type scale: font size / line height */
+  --text-headline: 44px;
+  --leading-headline: 44px;
+  --text-hero: 36px;
+  --leading-hero: 40px;
   --text-display: 56px;
   --leading-display: 56px;
   --text-heading: 28px;
@@ -66,6 +72,7 @@
   --space-8: 32px;
   --space-9: 36px;
   --space-10: 40px;
+  --space-11: 44px;
   --space-12: 48px;
   --space-14: 56px;
   --space-16: 64px;
@@ -76,6 +83,10 @@
   --space-gutter: 20px;
   --size-tab-bar: 80px;
   --size-tab-active: 72px;
+  --size-avatar: 84px;
+  --size-search-bar: 60px;
+  --size-search-tall: 80px;
+  --size-stay-card: 268px;
 
   /* Radii */
   --radius-none: 0px;
